@@ -49,19 +49,19 @@ You can esaly run into Docker Container by following the next step:
 - Build the Docker image
 
 ```
-    docker build -t sismos_streamlit:v1 .
+    docker build -t streamlit-sismos:v1 .
 ```
 
 - Run the Docker image to create a Docker Container
 
 ```
-    docker run --name data_viz_container -p 8000:8000 sismos_streamlit:v1
+    docker run -p 8501:8501 -v $(pwd)/src:/app/src -v $(pwd)/data:/app/data streamlit-sismos:v1
 ```
 
 - Copy the url showed into the terminal. Example:
 
 ```
-    http://0.0.0.0:8000/
+    http://0.0.0.0:8501/
 ```
 
 # License

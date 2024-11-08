@@ -16,10 +16,9 @@ max_depth = st.sidebar.slider('Nivel de Profundidad (km)', min_value=0, max_valu
 
 filtered_df = preprocess_data(df, start_date, end_date, min_magnitude, max_depth)
 
-st.sidebar.write("Datos filtrados", filtered_df)
+st.sidebar.write("Datos Infiltrados", filtered_df)
 
-
-st.title('Análisis de Sismos')
+st.title('Análisis de Sismos 3')
 col1, col2 = st.columns([1, 2])
 
 with col2:

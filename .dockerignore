@@ -8,10 +8,9 @@
 .gitlab-ci.yml
 .gitmodules
 .idea
-.data
 .sass-cache
 **/__pycache__/
-dmc_venv
+pds_venv/
 images
 tests
 LICENSE
@@ -24,7 +23,6 @@ docker-compose.yml
 */*/temp*
 docker
 .vagrant
-.data
 .idea
 app/sessions/*
 app/logs/*

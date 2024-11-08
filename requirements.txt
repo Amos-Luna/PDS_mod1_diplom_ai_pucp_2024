@@ -7,3 +7,6 @@ openpyxl
 streamlit
 geopandas
 plotly
+folium
+geopy
+streamlit_folium

@@ -4,7 +4,7 @@ from preprocessor import preprocess_data
 from utils import plot_temporal_evolution
 
 
-path = "data/Catalogo1960_2023.xlsx"
+path = "data/Catalogo1960_2023.xlsx" 
 df =  pd.read_excel(path)
 
 

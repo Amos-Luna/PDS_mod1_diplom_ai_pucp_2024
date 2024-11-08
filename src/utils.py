@@ -7,7 +7,7 @@ def plot_temporal_evolution_magnitude(df):
     plt.xlabel("Año", fontsize=14)
     plt.ylabel("Magnitud Promedio", fontsize=14)
     plt.tight_layout()
-    return plt
+    return plt.gcf()
 
     
 def plot_temporal_evolution_profundidad(df):
@@ -15,7 +15,7 @@ def plot_temporal_evolution_profundidad(df):
     plt.xlabel("Año", fontsize=14)
     plt.ylabel("Profundidad Promedio (m)", fontsize=14)
     plt.tight_layout()
-    return plt
+    return plt.gcf()
 
 
 def plot_choropleth_peru(df, gdf_peru, gdf_limits_peru):
@@ -28,4 +28,4 @@ def plot_choropleth_peru(df, gdf_peru, gdf_limits_peru):
     ax.set_ylim(-20, 0)
     ax.set_axis_off()
     plt.tight_layout()
-    return plt
+    return plt.gcf()

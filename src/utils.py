@@ -1,34 +1,31 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_temporal_evolution(df):
-    plt.figure(figsize=(14, 6))
-    sns.lineplot(x='año', y='MAGNITUD', data=df, marker='o', color='b')
-    plt.title("Evolución Temporal de la Magnitud Promedio por Año", fontsize=16)
+def plot_temporal_evolution_magnitude(df):
+ 
+    sns.lineplot(x='year', y='MAGNITUD', data=df, marker='o', color='b')
     plt.xlabel("Año", fontsize=14)
     plt.ylabel("Magnitud Promedio", fontsize=14)
     plt.tight_layout()
     return plt
 
     
-    
-# def plot_magnitude_over_time(df):
-#     plt.figure(figsize=(10, 5))
-#     plt.plot(df['FECHA_UTC'], df['MAGNITUD'], marker='o', color='b', linestyle='-', markersize=5)
-#     plt.title('Magnitud de los sismos a lo largo del tiempo')
-#     plt.xlabel('Fecha')
-#     plt.ylabel('Magnitud')
-#     plt.grid(True)
-#     plt.tight_layout()
-#     return plt
+def plot_temporal_evolution_profundidad(df):
+    sns.lineplot(x='year', y='PROFUNDIDAD', data=df, marker='o', color='g', )
+    plt.xlabel("Año", fontsize=14)
+    plt.ylabel("Profundidad Promedio (m)", fontsize=14)
+    plt.tight_layout()
+    return plt
 
 
-# def plot_depth_over_time(df):
-#     plt.figure(figsize=(10, 5))
-#     plt.plot(df['FECHA_UTC'], df['PROFUNDIDAD'], marker='o', color='r', linestyle='-', markersize=5)
-#     plt.title('Profundidad de los sismos a lo largo del tiempo')
-#     plt.xlabel('Fecha')
-#     plt.ylabel('Profundidad (km)')
-#     plt.grid(True)
-#     plt.tight_layout()
-#     return plt
+def plot_choropleth_peru(df, gdf_peru, gdf_limits_peru):
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+    gdf_peru.plot(ax=ax, color='lightblue', edgecolor='black')
+    gdf_limits_peru.plot(ax=ax, marker='o', color='red', markersize=df['MAGNITUD'] * 3, label='Eventos sísmicos')
+    plt.legend()
+    ax.set_xlim(-82, -68)  
+    ax.set_ylim(-20, 0)
+    ax.set_axis_off()
+    plt.tight_layout()
+    return plt

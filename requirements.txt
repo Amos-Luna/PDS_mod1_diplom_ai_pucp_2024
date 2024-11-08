@@ -5,3 +5,5 @@ jupyter==1.1.1
 geopandas==1.0.1
 openpyxl
 streamlit
+geopandas
+plotly

@@ -3,6 +3,7 @@ import seaborn as sns
 import pandas as pd
 import geopandas as gpd
 import numpy as np
+from constants import FONSTSIZE, FONTWEIGHT
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -41,8 +42,8 @@ def data_loader(
 
 def plot_temporal_evolution_magnitude(df):
     sns.lineplot(x='YEAR', y='MAGNITUD', data=df, marker='o', color='b')
-    plt.xlabel("Año", fontsize=14)
-    plt.ylabel("Magnitud Promedio", fontsize=14)
+    plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+    plt.ylabel("Magnitud Promedio", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.grid(True, linestyle='--', alpha=0.2)
     plt.tight_layout()
     return plt.gcf()
@@ -50,15 +51,15 @@ def plot_temporal_evolution_magnitude(df):
     
 def plot_temporal_evolution_profundidad(df):
     sns.lineplot(x='YEAR', y='PROFUNDIDAD', data=df, marker='o', color='g', )
-    plt.xlabel("Año", fontsize=14)
-    plt.ylabel("Profundidad Promedio (m)", fontsize=14)
+    plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+    plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.grid(True, linestyle='--', alpha=0.2)
     plt.tight_layout()
     return plt.gcf()
 
 
 def plot_choropleth_peru(df, gdf_peru, gdf_limits_peru):
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(6, 6))
     gdf_peru.plot(ax=ax, color='lightblue', edgecolor='black')
     gdf_limits_peru.plot(ax=ax, marker='o', color='red', markersize=df['MAGNITUD'] * 3, label='Eventos sísmicos')
     plt.legend()
@@ -73,8 +74,8 @@ def plot_folium_map(
     df: pd.DataFrame
 ):
     sns.lineplot(x='YEAR', y='PROFUNDIDAD', data=df, marker='o', color='g', )
-    plt.xlabel("Año", fontsize=14)
-    plt.ylabel("Profundidad Promedio (m)", fontsize=14)
+    plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+    plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.tight_layout()
     return plt.gcf()
 
@@ -107,9 +108,9 @@ def plot_histogram_of_magnitud(
                 edgecolor='black',
                 linewidth=1)
 
-    plt.xlabel('Magnitude', fontsize=12, fontweight='bold')
-    plt.ylabel('Number of Events', fontsize=12, fontweight='bold')
-    plt.xticks(bin_centers, [f'{x:.1f}' for x in bin_centers], rotation=0)
+    plt.xlabel('Magnitud', fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+    plt.ylabel('Number of Eventos ocurridos', fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+    plt.xticks(bin_centers, [f'{x:.1f}' for x in bin_centers], rotation=0, fontsize=10)
     plt.xlim(df['MAGNITUD'].min() - 0.2, df['MAGNITUD'].max() + 0.2)
     plt.grid(True, linestyle='--', alpha=0.2)
     plt.tight_layout()

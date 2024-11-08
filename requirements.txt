@@ -10,3 +10,5 @@ plotly
 folium
 geopy
 streamlit_folium
+openai
+pillow

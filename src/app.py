@@ -1,6 +1,6 @@
+from constants import CHATBOT_MODEL
 import streamlit as st
-import pandas as pd
-import geopandas as gpd
+from openai import OpenAI
 import altair as alt
 from preprocessor import (
     temporal_evolution_magnitude, 
@@ -17,7 +17,6 @@ from utils import (
     plot_histogram_of_magnitud
 )
 import matplotlib.pyplot as plt
-from streamlit_folium import st_folium
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -116,19 +115,19 @@ if st.session_state.processed_data is not None:
     with col1:
         with st.container():
             st.subheader('Evolución Temporal de la Magnitud Promedio por Año')
-            plt.figure(figsize=(10, 5))
+            plt.figure(figsize=(10, 7))
             fig1 = plot_temporal_evolution_magnitude(st.session_state.processed_data['df_temp_mag'])
             st.pyplot(fig1, use_container_width=True)
             plt.close()
             
             st.subheader('Evolución Temporal de la Profundidad Promedio por Año')
-            plt.figure(figsize=(10, 6))
+            plt.figure(figsize=(10, 7))
             fig2 = plot_temporal_evolution_profundidad(st.session_state.processed_data['df_temp_prof'])
             st.pyplot(fig2, use_container_width=True)
             plt.close()
             
             st.subheader('Histograma de los Sismos Ocurridos en terminos de Magnitud')
-            plt.figure(figsize=(10, 6))
+            plt.figure(figsize=(10, 7))
             fig3= plot_histogram_of_magnitud(st.session_state.processed_data['histogram_magnitud'])
             st.pyplot(fig3, use_container_width=True)
             plt.close()
@@ -137,26 +136,7 @@ if st.session_state.processed_data is not None:
     with col2:
         with st.container():
             try:
-                st.subheader('Mapa de Sismos en Perú - HeatMap')
-                folium_map = st.session_state.processed_data['country_map']
-                if folium_map is not None:
-                    st_folium(
-                        folium_map,
-                        width=None,
-                        height=450,
-                        returned_objects=["last_active_drawing"],
-                        use_container_width=True
-                    )
-                else:
-                    st.warning("No se pudo cargar el mapa")
-            except Exception as e:
-                st.error(f"Error al cargar el mapa: {str(e)}")
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            try:
                 st.subheader('Mapa de Sismos en Perú - Selected Points')
-                plt.figure(figsize=(8, 12))
                 fig3 = plot_choropleth_peru(
                     st.session_state.df,
                     st.session_state.gdf_peru,
@@ -164,5 +144,78 @@ if st.session_state.processed_data is not None:
                 )
                 st.pyplot(fig3, use_container_width=True)
                 plt.close()
+                
+                st.markdown("""
+                    <style>
+                    .stChatFloatingInputContainer {
+                        position: sticky !important;
+                        bottom: 0 !important;
+                        background-color: #0E1117 !important;
+                        padding: 1rem 0 !important;
+                    }
+                    .stChatMessage {
+                        background-color: #262730 !important;
+                    }
+                    .chat-container {
+                        display: flex;
+                        flex-direction: column;
+                        height: 600px;
+                        overflow-y: auto;
+                        padding-bottom: 100px;
+                    }
+                    .chat-container > div {
+                        flex: 0 0 auto;
+                    }
+                    </style>
+                """, unsafe_allow_html=True)
+
+                openai_api_key = st.text_input("**INSERT YOUR OPENAI_API_KEY** 👇", key="chatbot_api_key", type="password")
+
+                if "messages" not in st.session_state:
+                    st.session_state.messages = [{"role": "assistant", "content": "¡Hola! ¿En qué puedo ayudarte hoy?"}]
+
+                
+                messages_container = st.container(height=700)
+                with messages_container:
+                    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+                    
+                    for msg in st.session_state.messages:
+                        with st.chat_message(msg["role"]):
+                            st.write(msg["content"])
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                prompt = st.chat_input("Escribe tu mensaje aquí...")
+                if prompt:
+                    if not openai_api_key:
+                        st.info("Por favor, añade tu API key de OpenAI para continuar.")
+                        st.stop()
+                    st.session_state.messages.append({"role": "user", "content": prompt})
+                    
+                    
+                    client = OpenAI(api_key=openai_api_key)
+                    try:
+                        response = client.chat.completions.create(
+                            model=CHATBOT_MODEL,
+                            messages=[
+                                {"role": m["role"], "content": m["content"]}
+                                for m in st.session_state.messages
+                            ]
+                        )
+                        msg = response.choices[0].message.content
+                        st.session_state.messages.append({"role": "assistant", "content": msg})
+                        st.rerun()
+                        
+                    except Exception as e:
+                        st.error(f"Error al comunicarse con OpenAI: {str(e)}")
+
+                st.markdown("""
+                    <script>
+                        const chatContainer = document.querySelector('.chat-container');
+                        if (chatContainer) {
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }
+                    </script>
+                """, unsafe_allow_html=True)
+                
             except Exception as e:
                 st.error(f"Error al cargar el mapa de puntos: {str(e)}")

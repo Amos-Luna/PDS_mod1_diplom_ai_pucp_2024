@@ -1,0 +1,3 @@
+FONSTSIZE= 14
+FONTWEIGHT = 'bold'
+CHATBOT_MODEL = 'gpt-4o-mini'

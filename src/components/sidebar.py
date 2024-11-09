@@ -1,10 +1,10 @@
 import streamlit as st
 from pydantic import BaseModel, ConfigDict
-from models.data_processor import DataProcessor
-from models.geo_data_processor import GeoDataProcessor
-from models.histogram_processor import HistogramProcessor
-from models.map_processor import MapProcessor
-from models.temporal_evolution import TemporalEvolution
+from processors.data_processor import DataProcessor
+from processors.geo_data_processor import GeoDataProcessor
+from processors.histogram_processor import HistogramProcessor
+from processors.map_processor import MapProcessor
+from processors.temporal_evolution import TemporalEvolution
 from utils import data_loader
 
 

@@ -40,7 +40,9 @@ def data_loader(
         return None, None
 
 
-def plot_temporal_evolution_magnitude(df):
+def plot_temporal_evolution_magnitude(
+    df: pd.DataFrame
+):
     sns.lineplot(x='YEAR', y='MAGNITUD', data=df, marker='o', color='b')
     plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.ylabel("Magnitud Promedio", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
@@ -49,7 +51,9 @@ def plot_temporal_evolution_magnitude(df):
     return plt.gcf()
 
     
-def plot_temporal_evolution_profundidad(df):
+def plot_temporal_evolution_profundidad(
+    df: pd.DataFrame
+):
     sns.lineplot(x='YEAR', y='PROFUNDIDAD', data=df, marker='o', color='g', )
     plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
@@ -58,7 +62,11 @@ def plot_temporal_evolution_profundidad(df):
     return plt.gcf()
 
 
-def plot_choropleth_peru(df, gdf_peru, gdf_limits_peru):
+def plot_choropleth_peru(
+    df: pd.DataFrame, 
+    gdf_peru: gpd.GeoDataFrame, 
+    gdf_limits_peru: gpd.GeoDataFrame
+):
     fig, ax = plt.subplots(figsize=(6, 6))
     gdf_peru.plot(ax=ax, color='lightblue', edgecolor='black')
     gdf_limits_peru.plot(ax=ax, marker='o', color='red', markersize=df['MAGNITUD'] * 3, label='Eventos sísmicos')
@@ -70,14 +78,14 @@ def plot_choropleth_peru(df, gdf_peru, gdf_limits_peru):
     return plt.gcf()
 
 
-def plot_folium_map(
-    df: pd.DataFrame
-):
-    sns.lineplot(x='YEAR', y='PROFUNDIDAD', data=df, marker='o', color='g', )
-    plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
-    plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
-    plt.tight_layout()
-    return plt.gcf()
+# def plot_folium_map(
+#     df: pd.DataFrame
+# ):
+#     sns.lineplot(x='YEAR', y='PROFUNDIDAD', data=df, marker='o', color='g', )
+#     plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+#     plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
+#     plt.tight_layout()
+#     return plt.gcf()
 
 
 def plot_histogram_of_magnitud(

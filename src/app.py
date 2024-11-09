@@ -3,11 +3,11 @@ import streamlit as st
 from openai import OpenAI
 import altair as alt
 from preprocessor import (
-    temporal_evolution_magnitude, 
-    temporal_evolution_profundidad,
-    make_choropleth,
-    process_folium_map,
-    process_histogram_magnitude
+    DataProcessor,
+    TemporalEvolution,
+    GeoDataProcessor,
+    MapProcessor,
+    HistogramProcessor
 )
 from utils import (
     data_loader,
@@ -97,12 +97,19 @@ with st.sidebar:
             )
 
             if st.button('Iniciar Procesamiento', key="process_button"):
+                data_processor = DataProcessor(df=st.session_state.df)
+                temporal_evolution = TemporalEvolution(processor=data_processor)             
+                geo_processor = GeoDataProcessor(df=st.session_state.df)
+                map_processor = MapProcessor(df=st.session_state.df)
+                histogram_processor = HistogramProcessor(df=st.session_state.df)
+                
                 st.session_state.processed_data = {
-                    'df_temp_mag': temporal_evolution_magnitude(st.session_state.df, start_year, end_year),
-                    'df_temp_prof': temporal_evolution_profundidad(st.session_state.df, start_year, end_year),
-                    'gdf_limits_peru': make_choropleth(st.session_state.df, start_year, end_year),
-                    'country_map': process_folium_map(st.session_state.df, start_year, end_year),
-                    'histogram_magnitud': process_histogram_magnitude(st.session_state.df, start_year, end_year)
+                    'df_temp_mag': temporal_evolution.magnitude_evolution(start_year, end_year),
+                    'df_temp_prof': temporal_evolution.profundidad_evolution(start_year, end_year),
+                    'gdf_limits_peru': geo_processor.make_choropleth(start_year, end_year),
+                    'country_map': map_processor.process_folium_map(start_year, end_year),
+                    'df_histogram_magnitud': histogram_processor.process_histogram_magnitude(start_year, end_year)
+
                 }
                 st.success("Procesamiento completado")
     else:
@@ -128,7 +135,8 @@ if st.session_state.processed_data is not None:
             
             st.subheader('Histograma de los Sismos Ocurridos en terminos de Magnitud')
             plt.figure(figsize=(10, 7))
-            fig3= plot_histogram_of_magnitud(st.session_state.processed_data['histogram_magnitud'])
+            fig3= plot_histogram_of_magnitud(st.session_state.processed_data['df_histogram_magnitud'])
+
             st.pyplot(fig3, use_container_width=True)
             plt.close()
             
@@ -136,7 +144,7 @@ if st.session_state.processed_data is not None:
     with col2:
         with st.container():
             try:
-                st.subheader('Mapa de Sismos en Perú - Selected Points')
+                st.subheader('Ubicación de Sismos en Perú')
                 fig3 = plot_choropleth_peru(
                     st.session_state.df,
                     st.session_state.gdf_peru,

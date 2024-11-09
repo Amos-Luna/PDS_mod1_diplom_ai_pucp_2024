@@ -7,12 +7,12 @@ Courso: Python for Data Science
 
 This project is about Earthquakes in Peru.
 This seismic database includes all the parameters that characterize an earthquake, calculated under the same conditions to ensure a homogeneous dataset: 
-    -- date 
-    -- time
-    -- latitude 
-    -- longitude
-    -- depth
-    -- magnitude
+- date 
+- time
+- latitude 
+- longitude
+- depth
+- magnitude
 The dataset contains the Instrumental Earthquake Catalog for the period from 1960 to 2023.
 
 ## Requirements

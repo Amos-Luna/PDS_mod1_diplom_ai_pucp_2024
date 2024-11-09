@@ -97,7 +97,6 @@ with st.sidebar:
             )
 
             if st.button('Iniciar Procesamiento', key="process_button"):
-                
                 data_processor = DataProcessor(df=st.session_state.df)
                 temporal_evolution = TemporalEvolution(processor=data_processor)             
                 geo_processor = GeoDataProcessor(df=st.session_state.df)
@@ -110,6 +109,7 @@ with st.sidebar:
                     'gdf_limits_peru': geo_processor.make_choropleth(start_year, end_year),
                     'country_map': map_processor.process_folium_map(start_year, end_year),
                     'df_histogram_magnitud': histogram_processor.process_histogram_magnitude(start_year, end_year)
+
                 }
                 st.success("Procesamiento completado")
     else:
@@ -136,6 +136,7 @@ if st.session_state.processed_data is not None:
             st.subheader('Histograma de los Sismos Ocurridos en terminos de Magnitud')
             plt.figure(figsize=(10, 7))
             fig3= plot_histogram_of_magnitud(st.session_state.processed_data['df_histogram_magnitud'])
+
             st.pyplot(fig3, use_container_width=True)
             plt.close()
             

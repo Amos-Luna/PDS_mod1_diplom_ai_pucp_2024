@@ -22,11 +22,10 @@ This seismic database includes all the parameters that characterize an earthquak
 
 The dataset contains the Instrumental Earthquake Catalog for the period from 1960 to 2023 - Peru.
 
-# Deployed into Streamlit Cloud:
+## Deployed into Streamlit Cloud:
 
 URL: https://pdsmod1diplomaipucp2024-tkpsrzmwkappegde22vcm54.streamlit.app/
 
-# Local Development
 
 ## Requirements
 

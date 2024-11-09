@@ -1,6 +1,6 @@
 import pandas as pd
 from pydantic import BaseModel, ConfigDict
-from models.data_processor import DataProcessor
+from processors.data_processor import DataProcessor
 import warnings
 warnings.filterwarnings('ignore')
 

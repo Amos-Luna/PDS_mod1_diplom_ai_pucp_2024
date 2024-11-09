@@ -14,20 +14,17 @@ class Column1(BaseModel):
     def render(self):
         if st.session_state.processed_data is not None:
             with st.container():
+                
+                st.session_state.plot_analytics_paths = []
+                st.session_state.plot_analytics_paths.append(plot_temporal_evolution_magnitude(st.session_state.processed_data['df_temp_mag']))
+                st.session_state.plot_analytics_paths.append(plot_temporal_evolution_profundidad(st.session_state.processed_data['df_temp_prof']))
+                st.session_state.plot_analytics_paths.append(plot_histogram_of_magnitud(st.session_state.processed_data['df_histogram_magnitud']))
+
                 st.subheader('Evolución Temporal de la Magnitud Promedio por Año')
-                plt.figure(figsize=(10, 7))
-                fig1 = plot_temporal_evolution_magnitude(st.session_state.processed_data['df_temp_mag'])
-                st.pyplot(fig1, use_container_width=True)
-                plt.close()
+                st.image(st.session_state.plot_analytics_paths[0], use_container_width=True)
 
                 st.subheader('Evolución Temporal de la Profundidad Promedio por Año')
-                plt.figure(figsize=(10, 7))
-                fig2 = plot_temporal_evolution_profundidad(st.session_state.processed_data['df_temp_prof'])
-                st.pyplot(fig2, use_container_width=True)
-                plt.close()
+                st.image(st.session_state.plot_analytics_paths[1], use_container_width=True)
 
-                st.subheader('Histograma de los Sismos Ocurridos en terminos de Magnitud')
-                plt.figure(figsize=(10, 7))
-                fig3 = plot_histogram_of_magnitud(st.session_state.processed_data['df_histogram_magnitud'])
-                st.pyplot(fig3, use_container_width=True)
-                plt.close()
+                st.subheader('Histograma de los Sismos Ocurridos en términos de Magnitud')
+                st.image(st.session_state.plot_analytics_paths[2], use_container_width=True)

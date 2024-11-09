@@ -1,9 +1,8 @@
-# src/chatbot.py
 import streamlit as st
 from openai import OpenAI
 from constants import CHATBOT_MODEL
 from pydantic import BaseModel, ConfigDict
-
+from utils import get_full_text_from_images
 
 class Chatbot(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -25,48 +24,66 @@ class Chatbot(BaseModel):
                 flex-direction: column;
                 height: 600px;
                 overflow-y: auto;
-                padding-bottom: 100px;
+                padding: 20px;
             }
-            .chat-container > div {
-                flex: 0 0 auto;
+            .chat-content {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                height: 100%;
+            }
+            .message-container {
+                background-color: #262730;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            .insights-title {
+                margin-bottom: 10px;
+                color: #ffffff;
+            }
+            .insights-content {
+                color: #e0e0e0;
+                line-height: 1.5;
             }
             </style>
         """, unsafe_allow_html=True)
-
-        openai_api_key = st.text_input("**INSERT YOUR OPENAI_API_KEY** 👇", key="chatbot_api_key", type="password")
-
-        if "messages" not in st.session_state:
-            st.session_state.messages = [{"role": "assistant", "content": "¡Hola! ¿En qué puedo ayudarte hoy?"}]
-
-        messages_container = st.container(height=700)
+        
+        st.subheader('CHAT BRAIN - Interpretador Agil de Datos e Insights')
+        
+        st.session_state.openai_api_key = st.text_input("**INSERT YOUR OPENAI_API_KEY** 👇", key="chatbot_api_key", type="password")
+        if not st.session_state.openai_api_key:
+            st.info("Por favor, añade tu API key de OpenAI para continuar.")
+            st.stop()
+        
+        messages_container = st.container(height=750)
+        
         with messages_container:
-            st.markdown('<div class="chat-container">', unsafe_allow_html=True)
             
-            for msg in st.session_state.messages:
-                with st.chat_message(msg["role"]):
-                    st.write(msg["content"])
-            st.markdown('</div>', unsafe_allow_html=True)
-
-
-        prompt = st.chat_input("Escribe tu mensaje aquí...")
-        if prompt:
-            if not openai_api_key:
-                st.info("Por favor, añade tu API key de OpenAI para continuar.")
-                st.stop()
-            st.session_state.messages.append({"role": "user", "content": prompt})
+            client = OpenAI(api_key=st.session_state.openai_api_key)
             
-            client = OpenAI(api_key=openai_api_key)
             try:
+                full_text_interpreted = get_full_text_from_images(temp_image_paths = st.session_state.plot_analytics_paths)
                 response = client.chat.completions.create(
                     model=CHATBOT_MODEL,
                     messages=[
-                        {"role": m["role"], "content": m["content"]}
-                        for m in st.session_state.messages
+                        {"role": "system", "content": "Build a summary less than 4 paragraphs in Spanish"},
+                        {
+                            "role": "user",
+                            "content": full_text_interpreted
+                        }
                     ]
                 )
-                msg = response.choices[0].message.content
-                st.session_state.messages.append({"role": "assistant", "content": msg})
-                st.rerun()
+                
+                msg_result = response.choices[0].message.content
+                st.markdown(
+                    f'<div class="message-container">'
+                    f'<h3 class="insights-title">Insights encontrados del Dashboard:</h3>'
+                    f'<div class="insights-content">{msg_result}</div>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
 
             except Exception as e:
                 st.error(f"Error al comunicarse con OpenAI: {str(e)}")
+        

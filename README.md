@@ -1,7 +1,8 @@
 # PDS_MOD1_DIPLOMADO_AI_PUCP
 
 Mod 1: Specialization Diploma in Application Development with Artificial Intelligence - PUCP - 2024
-Courso: Python for Data Science
+
+Materia: Python for Data Science
 
 ## Overview
 

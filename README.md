@@ -1,10 +1,19 @@
 # PDS_MOD1_DIPLOMADO_AI_PUCP
 
-Modulo 1 - Python para Data Science - Diplomado AI PUCP 2024
+Mod 1: Specialization Diploma in Application Development with Artificial Intelligence - PUCP - 2024
+Courso: Python for Data Science
 
 ## Overview
 
-This project is about Earthquakes in Peru
+This project is about Earthquakes in Peru.
+This seismic database includes all the parameters that characterize an earthquake, calculated under the same conditions to ensure a homogeneous dataset: 
+    -- date 
+    -- time
+    -- latitude 
+    -- longitude
+    -- depth
+    -- magnitude
+The dataset contains the Instrumental Earthquake Catalog for the period from 1960 to 2023.
 
 ## Requirements
 

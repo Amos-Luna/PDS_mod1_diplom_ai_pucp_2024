@@ -12,10 +12,11 @@ class Column2(BaseModel):
         if st.session_state.processed_data is not None:
             try:
                 with st.container():
+                    st.session_state.plot_map_paths = []
+                    st.session_state.plot_map_paths.append(plot_choropleth_peru(st.session_state.df, st.session_state.gdf_peru, st.session_state.processed_data['gdf_limits_peru']))
+                    
                     st.subheader('Ubicación de Sismos en Perú')
-                    fig3 = plot_choropleth_peru(st.session_state.df, st.session_state.gdf_peru, st.session_state.processed_data['gdf_limits_peru'])
-                    st.pyplot(fig3, use_container_width=True)
-                    plt.close()
+                    st.image(st.session_state.plot_map_paths[0], use_container_width=True)
                     
                     chatbot = Chatbot()
                     chatbot.render()

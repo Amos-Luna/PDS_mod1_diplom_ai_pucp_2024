@@ -13,3 +13,4 @@ streamlit_folium
 openai
 pillow
 playwright
+langchain

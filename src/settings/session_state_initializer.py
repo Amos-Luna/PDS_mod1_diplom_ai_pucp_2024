@@ -10,3 +10,11 @@ def initialize_session_state():
         st.session_state.gdf_peru = None
     if 'processed_data' not in st.session_state:
         st.session_state.processed_data = None
+    if 'plot_analytics_paths' not in st.session_state:
+        st.session_state.plot_analytics_paths = None
+    if 'plot_map_paths' not in st.session_state:
+        st.session_state.plot_map_paths = None
+    if 'openai_api_key' not in st.session_state:
+        st.session_state.openai_api_key = None
+    if "messages" not in st.session_state:
+        st.session_state.messages = None

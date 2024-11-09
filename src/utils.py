@@ -1,9 +1,13 @@
+import tempfile
+import streamlit as st
+from typing import List
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import geopandas as gpd
 import numpy as np
 from constants import FONSTSIZE, FONTWEIGHT
+from processors.vision_model_processor import VisionModelProcessor
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -11,18 +15,15 @@ warnings.filterwarnings('ignore')
 def read_dataset(
     path: str
 ) -> pd.DataFrame:
-    
     df =  pd.read_excel(path)
     df['FECHA_UTC'] = pd.to_datetime(df['FECHA_UTC'], format='%Y%m%d')
     df['YEAR'] = df['FECHA_UTC'].dt.year
-    
     return df
 
 
 def read_shapefile(
     path: str
 ) -> gpd.GeoDataFrame:
-    
     gdf_peru = gpd.read_file(path)
     return  gdf_peru
     
@@ -48,7 +49,12 @@ def plot_temporal_evolution_magnitude(
     plt.ylabel("Magnitud Promedio", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.grid(True, linestyle='--', alpha=0.2)
     plt.tight_layout()
-    return plt.gcf()
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmpfile:
+        fig_path = tmpfile.name
+        plt.savefig(fig_path)
+        plt.close()
+    return fig_path
 
     
 def plot_temporal_evolution_profundidad(
@@ -59,7 +65,12 @@ def plot_temporal_evolution_profundidad(
     plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
     plt.grid(True, linestyle='--', alpha=0.2)
     plt.tight_layout()
-    return plt.gcf()
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmpfile:
+        fig_path = tmpfile.name
+        plt.savefig(fig_path)
+        plt.close()
+    return fig_path
 
 
 def plot_choropleth_peru(
@@ -67,7 +78,7 @@ def plot_choropleth_peru(
     gdf_peru: gpd.GeoDataFrame, 
     gdf_limits_peru: gpd.GeoDataFrame
 ):
-    fig, ax = plt.subplots(figsize=(6, 6))
+    fig, ax = plt.subplots(figsize=(6, 9))
     gdf_peru.plot(ax=ax, color='lightblue', edgecolor='black')
     gdf_limits_peru.plot(ax=ax, marker='o', color='red', markersize=df['MAGNITUD'] * 3, label='Eventos sísmicos')
     plt.legend()
@@ -75,17 +86,12 @@ def plot_choropleth_peru(
     ax.set_ylim(-20, 0)
     ax.set_axis_off()
     plt.tight_layout()
-    return plt.gcf()
-
-
-# def plot_folium_map(
-#     df: pd.DataFrame
-# ):
-#     sns.lineplot(x='YEAR', y='PROFUNDIDAD', data=df, marker='o', color='g', )
-#     plt.xlabel("Año", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
-#     plt.ylabel("Profundidad Promedio (m)", fontsize=FONSTSIZE, fontweight=FONTWEIGHT)
-#     plt.tight_layout()
-#     return plt.gcf()
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmpfile:
+        fig_path = tmpfile.name
+        plt.savefig(fig_path)
+        plt.close()
+    return fig_path
 
 
 def plot_histogram_of_magnitud(
@@ -121,4 +127,36 @@ def plot_histogram_of_magnitud(
     plt.xlim(df['MAGNITUD'].min() - 0.2, df['MAGNITUD'].max() + 0.2)
     plt.grid(True, linestyle='--', alpha=0.2)
     plt.tight_layout()
-    return plt.gcf()
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmpfile:
+        fig_path = tmpfile.name
+        plt.savefig(fig_path)
+        plt.close()
+    return fig_path
+
+
+def get_full_text_from_images(
+    temp_image_paths: List[str]
+) -> str:
+    """Get full text from images"""
+
+    if not temp_image_paths:
+        print("Error: No image_paths were provided for text extraction.")
+        return ""
+
+    vision_processor = VisionModelProcessor()
+    full_text = ""
+    for index, image_path in enumerate(temp_image_paths):        
+        try:
+            
+            text = vision_processor.extract_text_from_image(image_path)
+            if text:
+                full_text += f"---- Grafico Número {index} ----\n{text}\n\n"
+            else:
+                print(f"No text extracted from {image_path}")   
+                
+        except Exception as e:
+            print(f"Error extracting text from {image_path}: {e}")
+            continue
+
+    return full_text

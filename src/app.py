@@ -1,7 +1,6 @@
 from constants import CHATBOT_MODEL
 import streamlit as st
 from openai import OpenAI
-from image_understanding import VisionModelProcessor
 import altair as alt
 from preprocessor import (
     DataProcessor,

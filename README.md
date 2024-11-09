@@ -6,7 +6,9 @@ Materia: Python for Data Science
 
 ## Dataset
 
-URL: https://www.datosabiertos.gob.pe/dataset/cat%C3%A1logo-s%C3%ADsmico-1960-2023-instituto-geof%C3%ADsico-del-per%C3%BA-igp
+- URL File 1 Original Dataset: https://shorturl.at/hFsSZ
+- URL File 2 GeoJSON Peru: https://shorturl.at/MxigU
+
 
 ## Overview
 
@@ -26,6 +28,12 @@ The dataset contains the Instrumental Earthquake Catalog for the period from 196
 
 URL: https://pdsmod1diplomaipucp2024-tkpsrzmwkappegde22vcm54.streamlit.app/
 
+To use this URL, make sure you meet the following requirements:
+
+- file 1: Original Dataset of the URL provided behind
+- fil 2: GeoJSON of Peru
+- API_KEY: OpenAI API Key
+  
 
 ## Requirements
 

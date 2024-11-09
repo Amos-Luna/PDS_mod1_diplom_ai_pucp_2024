@@ -13,6 +13,7 @@ This seismic database includes all the parameters that characterize an earthquak
 - longitude
 - depth
 - magnitude
+
 The dataset contains the Instrumental Earthquake Catalog for the period from 1960 to 2023.
 
 ## Requirements

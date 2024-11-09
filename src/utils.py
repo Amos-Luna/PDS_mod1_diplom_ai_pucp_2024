@@ -91,7 +91,6 @@ def plot_choropleth_peru(
 def plot_histogram_of_magnitud(
     df: pd.DataFrame
 ):
-
     counts, bins, _ = plt.hist(
         df['MAGNITUD'], 
         bins=np.arange(

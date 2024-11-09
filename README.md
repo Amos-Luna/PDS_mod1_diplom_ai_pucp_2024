@@ -30,9 +30,9 @@ URL: https://pdsmod1diplomaipucp2024-tkpsrzmwkappegde22vcm54.streamlit.app/
 
 To use this URL, first of all, make sure you got the following requirements:
 
-- file 1: Original Dataset of the URL provided behind
-- fil 2: GeoJSON of Peru
-- API_KEY: OpenAI API Key
+- File 1: Original Dataset of the URL provided above
+- Fil 2: GeoJSON of Peru
+- API_KEY: OpenAI API Key 
   
 
 ## Requirements

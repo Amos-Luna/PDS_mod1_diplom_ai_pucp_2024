@@ -4,6 +4,10 @@ Mod 1: Specialization Diploma in Application Development with Artificial Intelli
 
 Materia: Python for Data Science
 
+## Dataset
+
+URL: https://www.datosabiertos.gob.pe/dataset/cat%C3%A1logo-s%C3%ADsmico-1960-2023-instituto-geof%C3%ADsico-del-per%C3%BA-igp
+
 ## Overview
 
 This project is about Earthquakes in Peru.
@@ -17,6 +21,12 @@ This seismic database includes all the parameters that characterize an earthquak
 - magnitude
 
 The dataset contains the Instrumental Earthquake Catalog for the period from 1960 to 2023 - Peru.
+
+# Deployed into Streamlit Cloud:
+
+URL: https://pdsmod1diplomaipucp2024-tkpsrzmwkappegde22vcm54.streamlit.app/
+
+# Local Development
 
 ## Requirements
 
